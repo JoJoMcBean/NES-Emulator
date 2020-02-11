@@ -1,0 +1,157 @@
+16:05:51 **** Auto Build of configuration Debug for project nes_bootloader ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/nes_bootloader.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -I../../nes_bootloader_bsp/ps7_cortexa9_0/include -I"U:\cpre488\cpre488-mp0\project_1\project_1.sdk\nes_bootloader\src" -I"U:\cpre488\cpre488-mp0\project_1\project_1.sdk\nes_bootloader\src\xilsd" -I"U:\cpre488\cpre488-mp0\project_1\project_1.sdk\nes_bootloader\src\NESCore" -c -fmessage-length=0 -MT"src/nes_bootloader.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -MMD -MP -MF"src/nes_bootloader.d" -MT"src/nes_bootloader.o" -o "src/nes_bootloader.o" "../src/nes_bootloader.c"
+../src/nes_bootloader.c: In function 'nes_load':
+../src/nes_bootloader.c:208:27: warning: pointer targets in passing argument 1 of 'NESCore_LoadROM' differ in signedness [-Wpointer-sign]
+  result = NESCore_LoadROM(nes_fname);
+                           ^~~~~~~~~
+In file included from ../src/nes_bootloader.c:20:0:
+U:\cpre488\cpre488-mp0\project_1\project_1.sdk\nes_bootloader\src\NESCore/NESCore.h:298:5: note: expected 'const char *' but argument is of type 'uint8_t * {aka unsigned char *}'
+ int NESCore_LoadROM(const char *fileName);
+     ^~~~~~~~~~~~~~~
+../src/nes_bootloader.c: In function 'nes_bootloader_run':
+../src/nes_bootloader.c:260:14: warning: pointer targets in passing argument 1 of 'nes_strncpy' differ in signedness [-Wpointer-sign]
+  nes_strncpy(nes_bmpname, bitmapTable[bitmapCursorIndex], 40);
+              ^~~~~~~~~~~
+In file included from ../src/nes_bootloader.h:33:0,
+                 from ../src/nes_bootloader.c:19:
+../src/utils.h:24:10: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ uint8_t *nes_strncpy(uint8_t *dest, uint8_t *src, uint8_t n);
+          ^~~~~~~~~~~
+../src/nes_bootloader.c:260:27: warning: pointer targets in passing argument 2 of 'nes_strncpy' differ in signedness [-Wpointer-sign]
+  nes_strncpy(nes_bmpname, bitmapTable[bitmapCursorIndex], 40);
+                           ^~~~~~~~~~~
+In file included from ../src/nes_bootloader.h:33:0,
+                 from ../src/nes_bootloader.c:19:
+../src/utils.h:24:10: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ uint8_t *nes_strncpy(uint8_t *dest, uint8_t *src, uint8_t n);
+          ^~~~~~~~~~~
+../src/nes_bootloader.c:261:14: warning: pointer targets in passing argument 1 of 'nes_strncat' differ in signedness [-Wpointer-sign]
+  nes_strncat(nes_bmpname, fileExtBmp, 40);
+              ^~~~~~~~~~~
+In file included from ../src/nes_bootloader.h:33:0,
+                 from ../src/nes_bootloader.c:19:
+../src/utils.h:25:10: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ uint8_t *nes_strncat(uint8_t *dest, uint8_t *src, uint8_t n);
+          ^~~~~~~~~~~
+../src/nes_bootloader.c:261:27: warning: pointer targets in passing argument 2 of 'nes_strncat' differ in signedness [-Wpointer-sign]
+  nes_strncat(nes_bmpname, fileExtBmp, 40);
+                           ^~~~~~~~~~
+In file included from ../src/nes_bootloader.h:33:0,
+                 from ../src/nes_bootloader.c:19:
+../src/utils.h:25:10: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ uint8_t *nes_strncat(uint8_t *dest, uint8_t *src, uint8_t n);
+          ^~~~~~~~~~~
+../src/nes_bootloader.c:305:16: warning: pointer targets in passing argument 1 of 'nes_strncpy' differ in signedness [-Wpointer-sign]
+    nes_strncpy(nes_bmpname, bitmapTable[bitmapCursorIndex], 40);
+                ^~~~~~~~~~~
+In file included from ../src/nes_bootloader.h:33:0,
+                 from ../src/nes_bootloader.c:19:
+../src/utils.h:24:10: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ uint8_t *nes_strncpy(uint8_t *dest, uint8_t *src, uint8_t n);
+          ^~~~~~~~~~~
+../src/nes_bootloader.c:305:29: warning: pointer targets in passing argument 2 of 'nes_strncpy' differ in signedness [-Wpointer-sign]
+    nes_strncpy(nes_bmpname, bitmapTable[bitmapCursorIndex], 40);
+                             ^~~~~~~~~~~
+In file included from ../src/nes_bootloader.h:33:0,
+                 from ../src/nes_bootloader.c:19:
+../src/utils.h:24:10: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ uint8_t *nes_strncpy(uint8_t *dest, uint8_t *src, uint8_t n);
+          ^~~~~~~~~~~
+../src/nes_bootloader.c:306:16: warning: pointer targets in passing argument 1 of 'nes_strncat' differ in signedness [-Wpointer-sign]
+    nes_strncat(nes_bmpname, fileExtBmp, 40);
+                ^~~~~~~~~~~
+In file included from ../src/nes_bootloader.h:33:0,
+                 from ../src/nes_bootloader.c:19:
+../src/utils.h:25:10: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ uint8_t *nes_strncat(uint8_t *dest, uint8_t *src, uint8_t n);
+          ^~~~~~~~~~~
+../src/nes_bootloader.c:306:29: warning: pointer targets in passing argument 2 of 'nes_strncat' differ in signedness [-Wpointer-sign]
+    nes_strncat(nes_bmpname, fileExtBmp, 40);
+                             ^~~~~~~~~~
+In file included from ../src/nes_bootloader.h:33:0,
+                 from ../src/nes_bootloader.c:19:
+../src/utils.h:25:10: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ uint8_t *nes_strncat(uint8_t *dest, uint8_t *src, uint8_t n);
+          ^~~~~~~~~~~
+../src/nes_bootloader.c:319:16: warning: pointer targets in passing argument 1 of 'nes_strncpy' differ in signedness [-Wpointer-sign]
+    nes_strncpy(nes_bmpname, bitmapTable[bitmapCursorIndex], 40);
+                ^~~~~~~~~~~
+In file included from ../src/nes_bootloader.h:33:0,
+                 from ../src/nes_bootloader.c:19:
+../src/utils.h:24:10: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ uint8_t *nes_strncpy(uint8_t *dest, uint8_t *src, uint8_t n);
+          ^~~~~~~~~~~
+../src/nes_bootloader.c:319:29: warning: pointer targets in passing argument 2 of 'nes_strncpy' differ in signedness [-Wpointer-sign]
+    nes_strncpy(nes_bmpname, bitmapTable[bitmapCursorIndex], 40);
+                             ^~~~~~~~~~~
+In file included from ../src/nes_bootloader.h:33:0,
+                 from ../src/nes_bootloader.c:19:
+../src/utils.h:24:10: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ uint8_t *nes_strncpy(uint8_t *dest, uint8_t *src, uint8_t n);
+          ^~~~~~~~~~~
+../src/nes_bootloader.c:320:16: warning: pointer targets in passing argument 1 of 'nes_strncat' differ in signedness [-Wpointer-sign]
+    nes_strncat(nes_bmpname, fileExtBmp, 40);
+                ^~~~~~~~~~~
+In file included from ../src/nes_bootloader.h:33:0,
+                 from ../src/nes_bootloader.c:19:
+../src/utils.h:25:10: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ uint8_t *nes_strncat(uint8_t *dest, uint8_t *src, uint8_t n);
+          ^~~~~~~~~~~
+../src/nes_bootloader.c:320:29: warning: pointer targets in passing argument 2 of 'nes_strncat' differ in signedness [-Wpointer-sign]
+    nes_strncat(nes_bmpname, fileExtBmp, 40);
+                             ^~~~~~~~~~
+In file included from ../src/nes_bootloader.h:33:0,
+                 from ../src/nes_bootloader.c:19:
+../src/utils.h:25:10: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ uint8_t *nes_strncat(uint8_t *dest, uint8_t *src, uint8_t n);
+          ^~~~~~~~~~~
+../src/nes_bootloader.c:341:25: warning: pointer targets in passing argument 2 of 'nes_strncpy' differ in signedness [-Wpointer-sign]
+  nes_strncpy(nes_fname, bitmapTable[bitmapCursorIndex], 40);
+                         ^~~~~~~~~~~
+In file included from ../src/nes_bootloader.h:33:0,
+                 from ../src/nes_bootloader.c:19:
+../src/utils.h:24:10: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ uint8_t *nes_strncpy(uint8_t *dest, uint8_t *src, uint8_t n);
+          ^~~~~~~~~~~
+../src/nes_bootloader.c:342:25: warning: pointer targets in passing argument 2 of 'nes_strncat' differ in signedness [-Wpointer-sign]
+  nes_strncat(nes_fname, fileExtNes, 40);
+                         ^~~~~~~~~~
+In file included from ../src/nes_bootloader.h:33:0,
+                 from ../src/nes_bootloader.c:19:
+../src/utils.h:25:10: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ uint8_t *nes_strncat(uint8_t *dest, uint8_t *src, uint8_t n);
+          ^~~~~~~~~~~
+../src/nes_bootloader.c: In function 'nes_bootloader_loadThumbnail':
+../src/nes_bootloader.c:388:18: warning: pointer targets in passing argument 2 of 'xilsd_fopen' differ in signedness [-Wpointer-sign]
+  xilsd_fopen(fp, nes_bmpname);
+                  ^~~~~~~~~~~
+In file included from ../src/nes_bootloader.h:30:0,
+                 from ../src/nes_bootloader.c:19:
+U:\cpre488\cpre488-mp0\project_1\project_1.sdk\nes_bootloader\src\xilsd/xilsd.h:64:9: note: expected 'const char *' but argument is of type 'uint8_t * {aka unsigned char *}'
+ XStatus xilsd_fopen(FIL *file, const char *filename);
+         ^~~~~~~~~~~
+../src/nes_bootloader.c: In function 'xil_init':
+../src/nes_bootloader.c:406:10: warning: unused variable 'Status' [-Wunused-variable]
+  XStatus Status = XST_SUCCESS;
+          ^~~~~~
+'Finished building: ../src/nes_bootloader.c'
+' '
+'Building target: nes_bootloader.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../nes_bootloader_bsp/ps7_cortexa9_0/lib -o "nes_bootloader.elf"  ./src/xilsd/ff.o ./src/xilsd/mmc.o ./src/xilsd/xilsd.o  ./src/NESCore/M6502.o ./src/NESCore/NESCore.o ./src/NESCore/NESCore_Mapper.o ./src/NESCore/NESCore_pAPU.o  ./src/NESCore_Callback.o ./src/bmp_misc.o ./src/nes_bootloader.o ./src/utils.o ./src/wav_misc.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: nes_bootloader.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size nes_bootloader.elf  |tee "nes_bootloader.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 520032	   9776	1285744	1815552	 1bb400	nes_bootloader.elf
+'Finished building: nes_bootloader.elf.size'
+' '
+
+16:05:55 Build Finished (took 4s.0ms)
+

@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include "xparameters.h"
+#include "xvtc.h"
+#include "xil_cache.h"
+#include "xaxivdma.h"
+#include "xgpiops.h"
+#include <time.h>
+#include <unistd.h>
+
+int main() {
+
+	char snes_out = *((char *) 0x41230000);
+	char snes_in = *((char *) 0x41230008);
+	int latch = 0;
+	int clock = 1;
+	int serial_in = 0; //input
+	int count = 0;
+	int data = 0;
+	latch  = 1;
+	snes_out |= 0x1;
+	usleep(12);
+	latch = 0;
+	snes_out &= ~(0x1);
+	usleep(6);
+	while (count < 16){
+		data |= ((*((unsigned int *) 0x41230000) & 0x4) << 2) >> count;
+		clock = 0;
+		snes_out &= ~(0x2);
+		usleep(6);
+		clock = 1;
+		snes_out |= 0x2;
+		usleep(6);
+		count++;
+	}
+	//display data on LEDs
+	*((unsigned int *) 0x41200000) = data | 0x1;
+
+
+	return 0;
+
+}

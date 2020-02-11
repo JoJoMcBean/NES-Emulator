@@ -1,0 +1,185 @@
+/*****************************************************************************
+ * Joseph Zambreno
+ * Phillip Jones
+ * Department of Electrical and Computer Engineering
+ * Iowa State University
+ *****************************************************************************/
+
+/*****************************************************************************
+ * vga_test.c - example VGA out using a v_tc timing controller and vdma
+ * module.
+ *
+ *
+ * NOTES:
+ * 10/11/13 by JAZ::Design created.
+ * 1/15/2018 by PHJ: Update XVtc_Enable, new function that take only one arg
+ * 1/16/2018 by PHJ: Upaded to provide students with an option for directly
+                     accessing registers via pointers.
+ *****************************************************************************/
+
+#include <stdio.h>
+#include "xparameters.h"
+#include "xvtc.h"
+#include "xil_cache.h"
+#include "xaxivdma.h"
+
+#define BLACK		0x0000
+#define RED			0x000F
+#define GREEN		0x00F0
+#define BLUE		0x0F00
+#define CARDINAL	0x031C	//original 24-bit 0xC8103E -> discarded LSB 12-bit 0xC13 -> little-endian 0x31C
+#define GOLD		0x04BF	//original 24-bit 0xF1BE48 -> discarded LSB 12-bit 0xFB4 -> little-endian 0x4BF
+
+#define SWS_BASEADDR	0x41220000
+#define BTNS_BASEADDR	0x41210000
+#define LEDS_BASEADDR	0x41200000
+
+#define PS_BTN4	50
+#define PS_BTN5	51
+
+XGpioPs;
+XGpioPs_Config *ConfigPtr;
+
+
+u16 test_image[480][640];
+
+// Draw RGB test pattern
+void writeRGB(u16 test_image[480][640]) {
+	int i, j;
+
+	for (i = 0; i < 480; i++) {
+		for (j = 0; j < 640; j++) {
+			if (j < 2 || j > 638) {
+				test_image[i][j] = BLACK; // line of black on left and right
+			}
+			else if (j < 213) {
+			  test_image[i][j] = RED; // red pixels (0x000F)
+			}
+			else if(j < 426) {
+			  test_image[i][j] = GREEN; // green pixels (0x00F0)
+			}
+			else {
+			  test_image[i][j] = BLUE; // blue pixels (0x0F00)
+			}
+		}
+	}
+}
+
+// Draw cardinal-and-gold checkerboard made of 8px x 8px checkers
+void writeCyclone(u16 test_image[480][640]) {
+	int i, j;
+
+	for (i = 0; i < 480; i++) {
+		for (j = 0; j < 640; j++) {
+			if (j < 2 || j > 638) {
+				test_image[i][j] = BLACK;
+			}
+			else if ( ((j % 16 < 8) && (i % 16 >= 8)) || ((j % 16 >= 8) && (i % 16 < 8))) {
+				test_image[i][j] = CARDINAL;
+			}
+			else {
+				test_image[i][j] = GOLD;
+			}
+		}
+	}
+}
+
+int main() {
+
+	XVtc Vtc;
+    XVtc_Config *VtcCfgPtr;
+
+    int switches = *((unsigned int *) SWS_BASEADDR); //record data from switches
+	*((unsigned int *) LEDS_BASEADDR) = switches;	 //write switch data to LEDs
+
+	int btns = *((unsigned int *) BTNS_BASEADDR);
+
+
+    // Enable VTC module: Using high-level functions provided by Vendor
+    VtcCfgPtr = XVtc_LookupConfig(XPAR_AXI_VDMA_0_DEVICE_ID);
+    XVtc_CfgInitialize(&Vtc, VtcCfgPtr, VtcCfgPtr->BaseAddress);
+    XVtc_EnableGenerator(&Vtc);
+
+    // Challenge: Can you rewrite the Enable VTC module code by directly accessing
+    // the VTC registers using pointers?  (See VTC data sheet, and xparameters.h)
+
+    // VTC_CR[0]   |=  ENABLE_VTC;    // You: Declare VTC_CR and ENABLE_VTC appropriately (before main() )
+
+    // Configure MIO GPIOs on PS
+
+
+
+    // Initialize Test image for VDMA transfer to VGA monitor
+    /*for (i = 0; i < 480; i++) {
+      for (j = 0; j < 640; j++) {
+		if (j < 2 || j > 638) {
+			test_image[i][j] = BLACK; // line of black on left and right
+		}
+		else if (j < 213) {
+          test_image[i][j] = RED; // red pixels (0x000F)
+        }
+        else if(j < 426) {
+          test_image[i][j] = GREEN; // green pixels (0x00F0)
+        }
+        else {
+          test_image[i][j] = BLUE; // blue pixels (0x0F00)
+        }
+
+      }
+    }*/
+
+    /*for (i = 0; i < 480; i++) {
+    	for (j = 0; j < 640; j++) {
+    		if (j < 2 || j > 638) {
+    			test_image[i][j] = BLACK;
+    		}
+    		else if ( ((j % 16 < 8) && (i % 16 >= 8)) || ((j % 16 >= 8) && (i % 16 < 8))) {
+    			test_image[i][j] = CARDINAL;
+    		}
+    		else {
+    			test_image[i][j] = GOLD;
+    		}
+    	}
+    }*/
+
+    writeRGB(test_image);
+
+    Xil_DCacheFlush();
+
+    // Set up VDMA config registers
+    // Simple function abstraction by Vendor for writing VDMA registers
+    XAxiVdma_WriteReg(XPAR_AXI_VDMA_0_BASEADDR, XAXIVDMA_CR_OFFSET,  0x3);  // Read Channel: VDMA MM2S Circular Mode and Start bits set, VDMA MM2S Control
+    XAxiVdma_WriteReg(XPAR_AXI_VDMA_0_BASEADDR, XAXIVDMA_HI_FRMBUF_OFFSET, 0x0);  // Read Channel: VDMA MM2S Reg_Index
+    XAxiVdma_WriteReg(XPAR_AXI_VDMA_0_BASEADDR, XAXIVDMA_MM2S_ADDR_OFFSET + XAXIVDMA_START_ADDR_OFFSET, (u32) test_image);  // Read Channel: VDMA MM2S Frame buffer Start Addr 1
+    XAxiVdma_WriteReg(XPAR_AXI_VDMA_0_BASEADDR, XAXIVDMA_MM2S_ADDR_OFFSET + XAXIVDMA_STRD_FRMDLY_OFFSET, 640*2);  // Read Channel: VDMA MM2S FRM_Delay, and Stride
+    XAxiVdma_WriteReg(XPAR_AXI_VDMA_0_BASEADDR, XAXIVDMA_MM2S_ADDR_OFFSET + XAXIVDMA_HSIZE_OFFSET, 640*2);  // Read Channel: VDMA MM2S HSIZE
+    XAxiVdma_WriteReg(XPAR_AXI_VDMA_0_BASEADDR, XAXIVDMA_MM2S_ADDR_OFFSET + XAXIVDMA_VSIZE_OFFSET, 480);  // Read Channel: VDMA MM2S VSIZE  (Note: Also Starts VDMA transaction)
+
+
+    // Low-level register acess using pointers
+    // Alternative approach for configuring VDMA registers: Instead of using the abstracted function can you configure and start the VDMA using pointers to directly configure VDMA registers
+    // YOU: Declare VDMA_MM2S_XXX (before main) and set values "CHANGE_ME" appropriately, before main()
+
+    // VDMA_MM2S_CR[0]             = CHANGE_ME; // Read Channel: VDMA MM2S Circular/Park Mode and enable the channel
+    // VDMA_MM2S_REG_INDEX[0]      = CHANGE_ME; // Read Channel: VDMA MM2S Reg_Index
+    // VDMA_MM2S_START_ADDRESS1[0] = CHANGE_ME; // Read channel: VDMA MM2S Frame buffer Start Add 1
+    // VDMA_MM2S_FRMDLY_STRIDE[0]  = CHANGE_ME; // Read channel: VDMA MM2S FRM_Delay, and Stride
+    // VDMA_MM2S_HSIZE[0]          = CHANGE_ME; // Read channel: VDMA MM2S HSIZE
+    // VDMA_MM2S_VSIZE[0]          = CHANGE_ME; // Read channel: VDMA MM2S VSIZE  (Note: Also Starts VDMA transaction)
+
+
+    // Bonus code to allow switching between RGB test pattern and Cyclone checkerboard
+    while(switches & 0x01) {
+        switches = *((unsigned int *) SWS_BASEADDR); //record data from switches
+    	*((unsigned int *) LEDS_BASEADDR) = switches; //write switch data to LEDs
+
+    	if(switches & 0x80) {
+    		writeCyclone(test_image);
+    	}
+    	else {
+    		writeRGB(test_image);
+    	}
+    }
+
+    return 0;
+}

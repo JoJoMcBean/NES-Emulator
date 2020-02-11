@@ -1,0 +1,27 @@
+14:23:38 **** Auto Build of configuration Debug for project VGA_Test ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../vga_test.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"vga_test.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../VGA_Test_bsp/ps7_cortexa9_0/include -MMD -MP -MF"vga_test.d" -MT"vga_test.o" -o "vga_test.o" "../vga_test.c"
+../vga_test.c: In function 'main':
+../vga_test.c:89:6: warning: unused variable 'btns' [-Wunused-variable]
+  int btns = *((unsigned int *) BTNS_BASEADDR);
+      ^~~~
+'Finished building: ../vga_test.c'
+' '
+'Building target: VGA_Test.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../VGA_Test_bsp/ps7_cortexa9_0/lib -o "VGA_Test.elf"  ./vga_test.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: VGA_Test.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size VGA_Test.elf  |tee "VGA_Test.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+  42404	   1160	 636984	 680548	  a6264	VGA_Test.elf
+'Finished building: VGA_Test.elf.size'
+' '
+
+14:23:39 Build Finished (took 1s.613ms)
+
